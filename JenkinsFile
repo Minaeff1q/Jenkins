@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'DEBUG', choices: ['true', 'false'], description: 'Enable debug mode')
+    }
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Компиляция программы
+                    sh 'g++ -o rectangle rectangle.cpp'
+
+                    // Запуск программы с учетом DEBUG
+                    if (params.DEBUG == 'true') {
+                        sh './rectangle debug'
+                    } else {
+                        sh './rectangle'
+                    }
+                }
+            }
+        }
+    }
+}
